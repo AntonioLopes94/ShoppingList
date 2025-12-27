@@ -1,4 +1,9 @@
 package com.shoppinglist.ShoppingList.dto;
 
-public class ShoppingListResponse {
-}
+import java.time.Instant;
+
+public record ShoppingListResponse(
+   Long id,
+   String name,
+   Instant createdAt
+) {}

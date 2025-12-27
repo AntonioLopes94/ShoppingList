@@ -1,6 +1,8 @@
 package com.shoppinglist.ShoppingList.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
@@ -18,7 +20,7 @@ public class ShoppingList {
     private Instant createdAt = Instant.now();
 
 
-    protected ShoppingList(){}
+    public ShoppingList(@NotBlank @Size(min = 2, max = 120) String name){}
 
     public Long getId() {
         return id;
