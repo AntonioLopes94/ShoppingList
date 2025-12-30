@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/list")
+@RequestMapping("/api/lists")
 public class ShoppingListController {
 
     private final ShoppingListService service;
