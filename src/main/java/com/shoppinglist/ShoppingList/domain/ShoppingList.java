@@ -5,22 +5,33 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "shopping_lists")
 public class ShoppingList {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 120)
     private String name;
 
     @Column(name =  "created_at", nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    private Instant createdAt;
+
+    @PrePersist
+    void onCreate(){
+        this.createdAt = Instant.now();
+    }
 
 
-    public ShoppingList(@NotBlank @Size(min = 2, max = 120) String name){}
+    public ShoppingList(){}
+    public ShoppingList(@NotBlank @Size(min = 2, max = 120) String name){this.name = name;}
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -37,5 +48,4 @@ public class ShoppingList {
     public Instant getCreatedAt() {
         return createdAt;
     }
-
 }
