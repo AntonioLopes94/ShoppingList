@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/lists/{listId}/items")
 public class ItemController {
@@ -16,6 +18,11 @@ public class ItemController {
 
     public ItemController(ItemService service){
         this.service = service;
+    }
+
+    @GetMapping
+    public List<ItemResponse> listItems(@PathVariable Long listId){
+        return service.listItems(listId);
     }
 
     @PostMapping

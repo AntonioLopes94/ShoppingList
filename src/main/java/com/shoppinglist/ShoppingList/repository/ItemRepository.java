@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item,Long> {
 
-    List<Item> findByShoppingListIdOrderByCreatedAtAsc(Long listId);
+    List<Item> findByShoppingListIdOrderByCreatedAtAsc(Long shoppingListId);
     Optional<Item> findByIdAndShoppingListId(Long id, Long shoppingListId);
+
 }

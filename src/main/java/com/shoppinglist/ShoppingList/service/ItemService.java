@@ -11,6 +11,8 @@ import com.shoppinglist.ShoppingList.repository.ShoppingListRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ItemService {
 
@@ -57,6 +59,25 @@ public class ItemService {
 
         return toResponse(item);
     }
+
+    @Transactional
+    public List<ItemResponse> listItems(Long listId) {
+        shoppingListRepository.findById(listId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping list not found: " + listId));
+
+        return itemRepository.findByShoppingListIdOrderByCreatedAtAsc(listId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+//    @Transactional
+//    public void deleteList(Long itemId){
+//        if(!itemRepository.existsById(itemId)){
+//            throw new ResourceNotFoundException("Shopping list not found: " + itemId);
+//        }
+//        itemRepository.deleteById(itemId);
+//    }
 
     private ItemResponse toResponse(Item item){
         return new ItemResponse(

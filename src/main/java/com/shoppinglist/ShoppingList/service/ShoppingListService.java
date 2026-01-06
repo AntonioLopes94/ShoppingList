@@ -13,26 +13,26 @@ import java.util.List;
 
 @Service
 public class ShoppingListService {
-    private final ShoppingListRepository repository;
+    private final ShoppingListRepository shoppingRepository;
 
-    public ShoppingListService(ShoppingListRepository repository) {
-        this.repository = repository;
+    public ShoppingListService(ShoppingListRepository shoppingRepository) {
+        this.shoppingRepository = shoppingRepository;
     }
 
     @Transactional(readOnly = true)
     public ShoppingListResponse create(CreateShoppingListRequest request){
-        if (repository.existsByNameIgnoreCase(request.name())){
+        if (shoppingRepository.existsByNameIgnoreCase(request.name())){
             throw new BusinessRuleException("List name already exists");
         }
-        ShoppingList list = new ShoppingList(request.name());
-        ShoppingList saved = repository.save(list);
+        ShoppingList shoppingList = new ShoppingList(request.name());
+        ShoppingList saved = shoppingRepository.save(shoppingList);
 
         return toResponse(saved);
     }
 
     @Transactional
     public List<ShoppingListResponse> findAll(){
-        return repository.findAll()
+        return shoppingRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -40,15 +40,23 @@ public class ShoppingListService {
     }
 
     @Transactional(readOnly = true)
-    public ShoppingListResponse findById(Long id){
-        ShoppingList list = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Shopping list not found " + id));
+    public ShoppingListResponse findById(Long shoppingListId){
+        ShoppingList shoppingList = shoppingRepository.findById(shoppingListId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping list not found " + shoppingListId));
 
-        return toResponse(list);
+        return toResponse(shoppingList);
     }
 
-    private ShoppingListResponse toResponse(ShoppingList list) {
-        return new ShoppingListResponse(list.getId(), list.getName(), list.getCreatedAt());
+    @Transactional
+    public void deleteList(Long shoppingListId){
+        if(!shoppingRepository.existsById(shoppingListId)){
+            throw new ResourceNotFoundException("Shopping list not found: " + shoppingListId);
+        }
+        shoppingRepository.deleteById(shoppingListId);
+    }
+
+    private ShoppingListResponse toResponse(ShoppingList shoppingList) {
+        return new ShoppingListResponse(shoppingList.getId(), shoppingList.getName(), shoppingList.getCreatedAt());
     }
 
 
