@@ -19,7 +19,7 @@ public class ShoppingListService {
         this.shoppingRepository = shoppingRepository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ShoppingListResponse create(CreateShoppingListRequest request){
         if (shoppingRepository.existsByNameIgnoreCase(request.name())){
             throw new BusinessRuleException("List name already exists");

@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:shopping;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/shoppinglist
+    driver-class-name: org.postgresql.Driver
     username: usr
     password: 123
 
@@ -13,7 +13,13 @@ spring:
         format_sql: true
 
   flyway:
-    enable: true
+    enabled: true
 
-  server:
-    port: 8080
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /v3/api-docs

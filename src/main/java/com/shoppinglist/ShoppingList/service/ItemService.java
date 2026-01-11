@@ -71,14 +71,6 @@ public class ItemService {
                 .toList();
     }
 
-//    @Transactional
-//    public void deleteList(Long itemId){
-//        if(!itemRepository.existsById(itemId)){
-//            throw new ResourceNotFoundException("Shopping list not found: " + itemId);
-//        }
-//        itemRepository.deleteById(itemId);
-//    }
-
     private ItemResponse toResponse(Item item){
         return new ItemResponse(
                 item.getId(),
